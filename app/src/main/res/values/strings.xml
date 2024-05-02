@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">AchievePlay</string>
+
+    <string name="default_web_client_id" translatable="false">833565627547-s5ftf02h1fputh4k4fkpc104cqqp732b.apps.googleusercontent.com</string>
+
 </resources>
