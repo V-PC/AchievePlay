@@ -2,5 +2,12 @@
     <string name="app_name">AchievePlay</string>
 
     <string name="default_web_client_id" translatable="false">833565627547-s5ftf02h1fputh4k4fkpc104cqqp732b.apps.googleusercontent.com</string>
+    <string name="search_hint">Buscar videojuego</string>
+    <string name="search">Buscar</string>
+    <string name="new_releases">Nuevos lanzamientos</string>
+    <string name="coming_soon">Proximamente</string>
+    <string name="retro">Retro</string>
+    <string name="indie">Indie</string>
+    <string name="aaa">AAA</string>
 
 </resources>
