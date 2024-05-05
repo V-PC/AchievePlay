@@ -1,12 +1,22 @@
 package com.victor.achieveplay
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.victor.videogamesapi.FirestoreUtils
+import com.victor.videogamesapi.RawgService
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class DiscoveryActivity : AppCompatActivity() {
     private lateinit var searchView: androidx.appcompat.widget.SearchView
@@ -15,6 +25,7 @@ class DiscoveryActivity : AppCompatActivity() {
     private lateinit var platformSpinner: android.widget.Spinner
     private lateinit var dateSpinner: android.widget.Spinner
     private lateinit var gameAdapter: GameAdapter
+    private lateinit var retrofit: Retrofit
     private val allGames = listOf(
         // Datos ficticios para pruebas
         Game("The Legend of Zelda", "Adventure", "Nintendo", "2021"),
@@ -27,6 +38,10 @@ class DiscoveryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_discovery)
+        retrofit = getRetrofit()
+        val fetchGamesButton = findViewById<Button>(R.id.fetch_games_button)
+
+
 
         searchView = findViewById(R.id.search_view)
         recyclerView = findViewById(R.id.recycler_view_games)
@@ -107,4 +122,52 @@ class DiscoveryActivity : AppCompatActivity() {
 
         gameAdapter.updateGames(filteredGames)
     }
+
+    private fun searchByName(query: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val myResponse: Response<VideogameDataResponse> =
+                retrofit.create(RawgService::class.java).getVideogames(query)
+            if (myResponse.isSuccessful) {
+                Log.i("Consulta", "Funciona :)")
+                val response: VideogameDataResponse? = myResponse.body()
+                if (response != null) {
+                    Log.i("Cuerpo de la consulta", response.toString())
+                }
+
+                myResponse.body()?.videogames?.let { games ->
+                    games.forEach { game ->
+                        val gameData = hashMapOf(
+                            "id" to game.videogameId,
+                            "name" to game.name,
+                            "released" to game.releasedDate,
+                            "platforms" to game.platforms.map { it.platformDetails.name },
+                            "rating" to game.rating,
+                            "image" to game.videogameImage
+                        )
+                        FirestoreUtils.firestore.collection(FirestoreUtils.COLLECTION_GAMES).document(game.videogameId)
+                            .set(gameData)
+                            .addOnSuccessListener {
+                                Log.d(FirestoreUtils.TAG, "Juego añadido exitosamente: ${game.name}")
+                            }
+                            .addOnFailureListener { e ->
+                                Log.e(FirestoreUtils.TAG, "Error añadiendo el juego: ${game.name}", e)
+                            }
+                    }
+                }
+            } else {
+                Log.e(FirestoreUtils.TAG, "Error en la solicitud: ${myResponse.errorBody()}")
+            }
+
+        }
+
+    }
+
+    private fun getRetrofit(): Retrofit {
+        return Retrofit
+            .Builder()
+            .baseUrl("https://api.rawg.io/api/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
 }

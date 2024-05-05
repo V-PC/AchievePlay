@@ -44,6 +44,12 @@
             android:prompt="@string/date_prompt" />
     </LinearLayout>
 
+    <Button
+        android:id="@+id/fetch_games_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fetch Games" />
+
     <!-- Lista de Resultados -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_games"
