@@ -8,7 +8,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 object FirestoreUtils {
-    private const val TAG = "FirestoreUtils"
+    const val TAG = "FirestoreUtils"
     val firestore = FirebaseFirestore.getInstance()
     const val COLLECTION_GAMES = "Videojuegos"
 
