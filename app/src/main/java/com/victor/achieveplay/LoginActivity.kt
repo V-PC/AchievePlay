@@ -2,6 +2,7 @@ package com.victor.achieveplay
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -39,6 +40,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun signIn() {
+        Log.d(TAG, "Iniciando el proceso de inicio de sesión con Google")
         val signInIntent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
@@ -46,34 +48,47 @@ class LoginActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+        Log.d(TAG, "onActivityResult llamado con requestCode: $requestCode, resultCode: $resultCode")
+
         if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
-                // Google Sign In was successful, authenticate with Firebase
-                val account = task.getResult(ApiException::class.java)!!
-                firebaseAuthWithGoogle(account.idToken!!)
+                // Google Sign-In fue exitoso, autenticar con Firebase
+                val account = task.getResult(ApiException::class.java)
+                if (account != null) {
+                    Log.d(TAG, "Google Sign-In exitoso, autenticando con Firebase")
+                    firebaseAuthWithGoogle(account.idToken!!)
+                } else {
+                    Log.e(TAG, "Google Sign-In no retornó ninguna cuenta")
+                }
             } catch (e: ApiException) {
-                // Google Sign In failed, update UI appropriately
-                // Log.w(TAG, "Google sign in failed", e)
+                Log.e(TAG, "Google sign in failed", e)
             }
         }
     }
 
     private fun firebaseAuthWithGoogle(idToken: String) {
+        Log.d(TAG, "Autenticando con Firebase usando el token de Google")
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
+                    // Inicio de sesión exitoso, obtener información del usuario
                     val user = auth.currentUser
-                    // Update your UI here (e.g., launch another activity)
+                    Log.i(TAG, "Inicio de sesión exitoso con Firebase: ${user?.displayName}")
+
+                    // Redirigir a DiscoveryActivity
+                    val intent = Intent(this, DiscoveryActivity::class.java)
+                    startActivity(intent)
+                    finish()
                 } else {
-                    // If sign in fails, display a message to the user.
+                    Log.e(TAG, "Error en la autenticación con Firebase", task.exception)
                 }
             }
     }
 
     companion object {
         private const val RC_SIGN_IN = 9001
+        private const val TAG = "LoginActivity"
     }
 }

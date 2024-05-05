@@ -15,6 +15,7 @@
         <activity
             android:name=".DiscoveryActivity"
             android:exported="false" />
+        <activity android:name=".GameDetailsActivity"/>
         <activity
             android:name=".LoginActivity"
             android:exported="true">
