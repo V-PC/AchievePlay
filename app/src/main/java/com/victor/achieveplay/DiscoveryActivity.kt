@@ -1,5 +1,6 @@
 package com.victor.achieveplay
 
+import RawgService
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
@@ -9,8 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
 import com.victor.videogamesapi.FirestoreUtils
-import com.victor.videogamesapi.RawgService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -57,8 +59,13 @@ class DiscoveryActivity : AppCompatActivity() {
         gameAdapter = GameAdapter(allGames)
         recyclerView.adapter = gameAdapter
 
+
+        fetchGamesButton.setOnClickListener {
+            fetchAllGames()
+        }
         // Implementar Búsqueda
-        searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+        searchView.setOnQueryTextListener(object :
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let {
                     applyFilters(query)
@@ -100,7 +107,12 @@ class DiscoveryActivity : AppCompatActivity() {
 
     private fun createFilterListener(): android.widget.AdapterView.OnItemSelectedListener {
         return object : android.widget.AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: android.widget.AdapterView<*>, view: android.view.View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: android.widget.AdapterView<*>,
+                view: android.view.View?,
+                position: Int,
+                id: Long
+            ) {
                 applyFilters(searchView.query.toString())
             }
 
@@ -123,43 +135,65 @@ class DiscoveryActivity : AppCompatActivity() {
         gameAdapter.updateGames(filteredGames)
     }
 
-    private fun searchByName(query: String) {
+    fun fetchAllGames() {
+        var currentPage = 1
+        val firestore = Firebase.firestore  // Initialize Firestore instance
+
         CoroutineScope(Dispatchers.IO).launch {
-            val myResponse: Response<VideogameDataResponse> =
-                retrofit.create(RawgService::class.java).getVideogames(query)
-            if (myResponse.isSuccessful) {
-                Log.i("Consulta", "Funciona :)")
-                val response: VideogameDataResponse? = myResponse.body()
-                if (response != null) {
-                    Log.i("Cuerpo de la consulta", response.toString())
-                }
+            var moreGamesAvailable = true
+            while (moreGamesAvailable) {
+                val response = retrofit.create(RawgService::class.java).getVideogames(currentPage)
+                if (response.isSuccessful && response.body() != null) {
+                    response.body()?.videogames?.let { games ->
+                        Log.i("FetchAllGames", "Page: $currentPage, Games Fetched: ${games.size}")
+                        currentPage++
+                        games.forEach { game ->
+                            Log.i("Game", "Name: ${game.name}, Released: ${game.releasedDate}")
 
-                myResponse.body()?.videogames?.let { games ->
-                    games.forEach { game ->
-                        val gameData = hashMapOf(
-                            "id" to game.videogameId,
-                            "name" to game.name,
-                            "released" to game.releasedDate,
-                            "platforms" to game.platforms.map { it.platformDetails.name },
-                            "rating" to game.rating,
-                            "image" to game.videogameImage
-                        )
-                        FirestoreUtils.firestore.collection(FirestoreUtils.COLLECTION_GAMES).document(game.videogameId)
-                            .set(gameData)
-                            .addOnSuccessListener {
-                                Log.d(FirestoreUtils.TAG, "Juego añadido exitosamente: ${game.name}")
-                            }
-                            .addOnFailureListener { e ->
-                                Log.e(FirestoreUtils.TAG, "Error añadiendo el juego: ${game.name}", e)
-                            }
+                            // Prepare data for Firestore
+                            val gameData = hashMapOf(
+                                "id" to game.videogameId,
+                                "name" to game.name,
+                                "released" to game.releasedDate,
+                                "platforms" to game.platforms.map { it.platformDetails.name },
+                                "rating" to game.rating,
+                                "image" to game.videogameImage,
+                                "genres" to game.genres
+                            )
+
+                            // Upload game data to Firestore
+                            firestore.collection("Videojuegos").document(game.videogameId)
+                                .set(gameData)
+                                .addOnSuccessListener {
+                                    Log.d(
+                                        "FirestoreUtils",
+                                        "Juego añadido exitosamente: ${game.name}"
+                                    )
+                                }
+                                .addOnFailureListener { e ->
+                                    Log.e(
+                                        "FirestoreUtils",
+                                        "Error añadiendo el juego: ${game.name}",
+                                        e
+                                    )
+                                }
+                        }
+                        moreGamesAvailable = games.isNotEmpty()
+                    } ?: run {
+                        moreGamesAvailable = false
+                        Log.e("FetchAllGames", "No more games to fetch or empty response")
                     }
+                } else {
+                    moreGamesAvailable = false
+                    Log.e(
+                        "FetchAllGames",
+                        "Failed to fetch games or end of list reached: ${
+                            response.errorBody()?.string()
+                        }"
+                    )
                 }
-            } else {
-                Log.e(FirestoreUtils.TAG, "Error en la solicitud: ${myResponse.errorBody()}")
             }
-
         }
-
     }
 
     private fun getRetrofit(): Retrofit {
@@ -171,3 +205,5 @@ class DiscoveryActivity : AppCompatActivity() {
     }
 
 }
+
+

@@ -12,9 +12,14 @@ data class VideogameItemResponse(
     @SerializedName("background_image") val videogameImage: String,
     @SerializedName("released") val releasedDate: String,
     @SerializedName("platforms") val platforms: List<VideogamePlatformWrapper>,
-    @SerializedName("rating") val rating : Double
+    @SerializedName("rating") val rating : Double,
+    @SerializedName("genres") val genres: List<VideogameGenre>
 )
 
+data class VideogameGenre(
+    @SerializedName("id") val id: Int,
+    @SerializedName("name") val name: String,
+)
 data class VideogamePlatformWrapper(
     @SerializedName("platform") val platformDetails: VideogamePlatformDetail
 )
