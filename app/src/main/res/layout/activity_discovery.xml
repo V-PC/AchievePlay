@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="16dp">
 
-    <!-- Barra de búsqueda -->
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/search_view"
+    <!-- Barra de búsqueda con estilo Material Design -->
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:queryHint="Buscar videojuegos..." />
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:hint="@string/search_hint">
 
-    <!-- Contenedor de filtros -->
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Contenedor de filtros con mejor distribución y estilo -->
     <LinearLayout
         android:id="@+id/filter_container"
         android:layout_width="match_parent"
@@ -19,42 +27,52 @@
         android:orientation="horizontal"
         android:padding="8dp">
 
-        <!-- Filtro por género -->
-        <Spinner
-            android:id="@+id/spinner_genre"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:prompt="@string/genre_prompt" />
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
 
-        <!-- Filtro por plataforma -->
-        <Spinner
-            android:id="@+id/spinner_platform"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:prompt="@string/platform_prompt" />
+            <AutoCompleteTextView
+                android:id="@+id/spinner_genre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:hint="@string/genre_prompt" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Filtro por fecha -->
-        <Spinner
-            android:id="@+id/spinner_date"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:prompt="@string/date_prompt" />
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+
+            <AutoCompleteTextView
+                android:id="@+id/spinner_platform"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:hint="@string/platform_prompt" />
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
-    <Button
+    <!-- Botón de búsqueda con estilo Material -->
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/fetch_games_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Fetch Games" />
+        android:text="@string/fetch_games"
+        android:layout_gravity="center_horizontal"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
 
-    <!-- Lista de Resultados -->
+    <!-- RecyclerView configurado para mostrar 4 columnas -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_games"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="8dp" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="8dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="1"/>
 
 </LinearLayout>

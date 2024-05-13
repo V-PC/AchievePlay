@@ -6,6 +6,7 @@
     <string name="platform_prompt">Plataforma</string>
     <string name="date_prompt">Fecha de lanzamiento</string>
     <string name="search_hint">Buscar videojuegos...</string>
+    <string name="fetch_games">Buscar videojuegos</string>
     <string-array name="genre_options">
         <item>Todos</item>
         <item>RPG</item>
