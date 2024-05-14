@@ -133,13 +133,13 @@ class DiscoveryActivity : AppCompatActivity() {
         val db = FirebaseFirestore.getInstance()
         var query = db.collection("Videojuegos").orderBy("name").startAt(searchQuery).endAt(searchQuery + '\uf8ff')
 
-        if (selectedPlatform.isNotEmpty() || !selectedPlatform.equals("Todas")) {
+       /* if (selectedPlatform.isNotEmpty() || !selectedPlatform.equals("Todas")) {
             query = query.whereArrayContains("platforms", selectedPlatform)
         }
 
         if (selectedGenre.isNotEmpty()) {
             query = query.whereEqualTo("genre", selectedGenre)
-        }
+        }*/
 
         query.get().addOnSuccessListener { documents ->
             val games = documents.map { it.toObject(Game::class.java) }

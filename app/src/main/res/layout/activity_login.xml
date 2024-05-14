@@ -1,14 +1,43 @@
-<!-- activity_login.xml -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
 
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/sign_in_button"
+    <!-- ImageView para el fondo con efecto Parallax -->
+
+    <!-- Logo o título de la aplicación -->
+
+    <com.victor.achieveplay.ParallaxView
+        android:id="@+id/backgroundImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/welcomeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
+        android:text="Bienvenido a AchievePlay!"
+        android:fontFamily="@font/pressstart"
+        android:textSize="15sp"
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"/>
+
+
+    <!-- Botón personalizado de SignIn -->
+    <ImageView
+        android:id="@+id/sign_in_button"
+        android:layout_width="157dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="654dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/botonloginrecortado"
+        android:clickable="true"
+        android:text="Sign in with Google"
+        android:textColor="@android:color/white" />
 
 </RelativeLayout>

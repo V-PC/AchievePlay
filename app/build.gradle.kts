@@ -52,6 +52,7 @@ dependencies {
     implementation ("com.google.firebase:firebase-core:21.1.1")
 
     implementation ("com.google.firebase:firebase-firestore-ktx:25.0.0")
+    implementation ("com.google.firebase:firebase-storage:21.0.0")
 
     //Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
