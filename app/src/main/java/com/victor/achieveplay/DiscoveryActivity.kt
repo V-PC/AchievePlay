@@ -1,14 +1,15 @@
 package com.victor.achieveplay
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.firestore.FirebaseFirestore
@@ -18,7 +19,6 @@ class DiscoveryActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var genreSpinner: AutoCompleteTextView
     private lateinit var platformSpinner: AutoCompleteTextView
-    private lateinit var gameAdapter: GameAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +39,11 @@ class DiscoveryActivity : AppCompatActivity() {
                 Toast.makeText(this, "Por favor ingresa un término de búsqueda.", Toast.LENGTH_SHORT).show()
             }
         }
+        val buttonChangeActivity = findViewById<ImageView>(R.id.btnChangeActivity)
+        buttonChangeActivity.setOnClickListener {
+            val intent = Intent(this, UserProfileActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun initUI(){
@@ -53,8 +58,6 @@ class DiscoveryActivity : AppCompatActivity() {
 
         // Configurar RecyclerView
         recyclerView = findViewById(R.id.recycler_view_games)
-        gameAdapter = GameAdapter()
-        recyclerView.adapter = gameAdapter
         recyclerView.layoutManager = GridLayoutManager(this, 1)
 
 
@@ -119,7 +122,6 @@ class DiscoveryActivity : AppCompatActivity() {
                 val games = result.map { document ->
                     document.toObject(Game::class.java)
                 }
-                gameAdapter.setGames(games)
             }
             .addOnFailureListener { exception ->
                 Log.w("Firebase", "Error getting documents: ", exception)
@@ -143,7 +145,12 @@ class DiscoveryActivity : AppCompatActivity() {
 
         query.get().addOnSuccessListener { documents ->
             val games = documents.map { it.toObject(Game::class.java) }
-            gameAdapter.setGames(games)
+            recyclerView.adapter = GameAdapter(games){ game->
+                val intent =  Intent(this, GameDetailsActivity::class.java)
+                intent.putExtra("GAME_NAME", game.name)
+                intent.putExtra("GAME_IMAGE_URL", game.image)
+                startActivity(intent)
+            }
         }.addOnFailureListener { exception ->
             Log.d("Firestore", "Error getting documents: ", exception)
         }

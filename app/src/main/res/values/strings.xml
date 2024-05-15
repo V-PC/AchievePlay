@@ -7,6 +7,8 @@
     <string name="date_prompt">Fecha de lanzamiento</string>
     <string name="search_hint">Buscar videojuegos...</string>
     <string name="fetch_games">Buscar videojuegos</string>
+    <string name="change_activity">Cambiar de actividad</string>
+    <string name="logout">Cerrar sesión</string>
     <string-array name="genre_options">
         <item>Todos</item>
         <item>RPG</item>

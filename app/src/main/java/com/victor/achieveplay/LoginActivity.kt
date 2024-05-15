@@ -33,7 +33,7 @@ class LoginActivity : AppCompatActivity() , SensorEventListener {
         R.drawable.uncharted,
         R.drawable.hades
     )
-    private var imageIndex = -1
+    private var imageIndex = 0
     private val changeImageInterval: Long = 6000
     private val handler = Handler()
     private val changeImageRunnable = object : Runnable {
@@ -60,6 +60,7 @@ class LoginActivity : AppCompatActivity() , SensorEventListener {
         setContentView(R.layout.activity_login)
         val animScale = AnimationUtils.loadAnimation(this, R.anim.button_press)
         backgroundImage = findViewById(R.id.backgroundImageView)
+        backgroundImage.setImageResource(images[imageIndex])
         handler.postDelayed(changeImageRunnable, changeImageInterval)
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
         sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME)
@@ -90,7 +91,6 @@ class LoginActivity : AppCompatActivity() , SensorEventListener {
         backgroundImage.setOffset(x, y)
     }
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
-
     override fun onDestroy() {
         super.onDestroy()
         handler.removeCallbacks(changeImageRunnable)
@@ -100,7 +100,6 @@ class LoginActivity : AppCompatActivity() , SensorEventListener {
         val signInIntent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -122,7 +121,6 @@ class LoginActivity : AppCompatActivity() , SensorEventListener {
             }
         }
     }
-
     private fun firebaseAuthWithGoogle(idToken: String) {
         Log.d(TAG, "Autenticando con Firebase usando el token de Google")
         val credential = GoogleAuthProvider.getCredential(idToken, null)
@@ -142,7 +140,6 @@ class LoginActivity : AppCompatActivity() , SensorEventListener {
                 }
             }
     }
-
     companion object {
         private const val RC_SIGN_IN = 9001
         private const val TAG = "LoginActivity"

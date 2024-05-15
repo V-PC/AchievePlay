@@ -1,37 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
-
-    <TextView
-        android:id="@+id/details_name"
-        android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Nombre del Juego"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <TextView
-        android:id="@+id/details_genre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Género"
-        android:textSize="18sp" />
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/details_platform"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Plataforma"
-        android:textSize="18sp" />
+        <ImageView
+            android:id="@+id/gameImageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter" />
 
-    <TextView
-        android:id="@+id/details_release_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Fecha de Lanzamiento"
-        android:textSize="18sp" />
-
-</LinearLayout>
+        <TextView
+            android:id="@+id/descriptionTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp" />
+    </LinearLayout>
+</ScrollView>
