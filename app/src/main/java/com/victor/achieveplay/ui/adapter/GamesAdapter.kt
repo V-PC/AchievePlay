@@ -1,4 +1,4 @@
-package com.victor.achieveplay
+package com.victor.achieveplay.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +7,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.victor.achieveplay.R
+import com.victor.achieveplay.data.model.Game
 
 class GameAdapter(private var gameList: List<Game> = listOf(), private val onGameClick: (Game) -> Unit) : RecyclerView.Adapter<GameAdapter.GameViewHolder>() {
 

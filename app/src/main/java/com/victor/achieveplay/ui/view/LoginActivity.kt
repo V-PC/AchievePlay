@@ -1,4 +1,4 @@
-package com.victor.achieveplay
+package com.victor.achieveplay.ui.view
 
 import android.content.Intent
 import android.hardware.Sensor
@@ -9,16 +9,16 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.animation.AnimationUtils
-import android.widget.Button
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.victor.achieveplay.R
+import com.victor.achieveplay.ui.view.custom.ParallaxView
 
 class LoginActivity : AppCompatActivity() , SensorEventListener {
 

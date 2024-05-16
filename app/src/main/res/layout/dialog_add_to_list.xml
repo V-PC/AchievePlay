@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select a list or create a new one"
+        android:textSize="18sp"
+        android:paddingBottom="8dp" />
+
+    <Spinner
+        android:id="@+id/listsSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/newListEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="New List Name"
+        android:paddingTop="8dp" />
+
+    <Button
+        android:id="@+id/confirmButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Confirm"
+        android:paddingTop="16dp" />
+</LinearLayout>

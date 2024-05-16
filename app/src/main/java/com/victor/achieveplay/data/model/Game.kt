@@ -1,4 +1,4 @@
-package com.victor.achieveplay
+package com.victor.achieveplay.data.model
 
 data class Game(
     val id: String? = null,

@@ -1,4 +1,4 @@
-package com.victor.achieveplay
+package com.victor.achieveplay.ui.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -27,7 +27,7 @@ class SplashActivity : AppCompatActivity() {
         val profileComplete = checkIfUserProfileComplete { isProfileComplete ->
             if (isProfileComplete) {
                 // Navegar a la pantalla principal
-                startActivity(Intent(this, DiscoveryActivity::class.java))
+                startActivity(Intent(this, HomeActivity::class.java))
                 finish()
             } else {
                 // Navegar a la pantalla de login o creación de perfil

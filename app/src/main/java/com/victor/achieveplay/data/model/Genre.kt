@@ -1,4 +1,4 @@
-package com.victor.achieveplay
+package com.victor.achieveplay.data.model
 
 data class Genre(
     val id: Long? = null,

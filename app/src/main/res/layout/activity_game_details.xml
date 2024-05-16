@@ -13,18 +13,66 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:text="Game Title" />
 
         <ImageView
             android:id="@+id/gameImageView"
             android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="fitCenter"
+            android:contentDescription="Game Image" />
+
+        <TextView
+            android:id="@+id/releaseDateTextView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scaleType="fitCenter" />
+            android:text="Release Date"
+            android:textSize="16sp"
+            android:paddingTop="8dp" />
+
+        <TextView
+            android:id="@+id/genreTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Genre"
+            android:textSize="16sp"
+            android:paddingTop="8dp" />
+
+        <TextView
+            android:id="@+id/ratingTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rating"
+            android:textSize="16sp"
+            android:paddingTop="8dp" />
 
         <TextView
             android:id="@+id/descriptionTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp" />
+            android:text="Description"
+            android:textSize="16sp"
+            android:paddingTop="8dp" />
+
+        <Spinner
+            android:id="@+id/listsSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp" />
+
+        <EditText
+            android:id="@+id/newListEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="New List Name"
+            android:paddingTop="8dp" />
+
+        <Button
+            android:id="@+id/addToListButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add to List"
+            android:paddingTop="16dp" />
     </LinearLayout>
 </ScrollView>

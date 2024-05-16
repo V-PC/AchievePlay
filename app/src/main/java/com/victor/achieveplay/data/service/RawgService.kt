@@ -1,4 +1,6 @@
-import com.victor.achieveplay.VideogameDataResponse
+package com.victor.achieveplay.data.service
+
+import com.victor.achieveplay.data.model.VideogameDataResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

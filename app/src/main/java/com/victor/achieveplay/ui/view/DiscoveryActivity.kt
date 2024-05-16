@@ -1,4 +1,4 @@
-package com.victor.achieveplay
+package com.victor.achieveplay.ui.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.firestore.FirebaseFirestore
+import com.victor.achieveplay.R
+import com.victor.achieveplay.data.model.Game
+import com.victor.achieveplay.ui.adapter.GameAdapter
 
 class DiscoveryActivity : AppCompatActivity() {
     private lateinit var searchView: TextInputEditText
@@ -147,8 +150,11 @@ class DiscoveryActivity : AppCompatActivity() {
             val games = documents.map { it.toObject(Game::class.java) }
             recyclerView.adapter = GameAdapter(games){ game->
                 val intent =  Intent(this, GameDetailsActivity::class.java)
+                intent.putExtra("GAME_ID", game.id)
                 intent.putExtra("GAME_NAME", game.name)
                 intent.putExtra("GAME_IMAGE_URL", game.image)
+                intent.putExtra("RATING", game.rating)
+                intent.putExtra("RELEASE_DATE", game.released)
                 startActivity(intent)
             }
         }.addOnFailureListener { exception ->

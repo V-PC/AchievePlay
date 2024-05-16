@@ -16,20 +16,23 @@
         android:theme="@style/Theme.AchievePlay"
         tools:targetApi="31">
         <activity
-            android:name=".UserProfileActivity"
+            android:name=".ui.view.HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".DiscoveryActivity"
-            android:exported="false" />
-        <activity android:name=".GameDetailsActivity" />
-        <activity
-            android:name=".ProfileCreationActivity"
+            android:name=".ui.view.UserProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
-            android:exported="true"></activity>
+            android:name=".ui.view.DiscoveryActivity"
+            android:exported="false" />
+        <activity android:name=".ui.view.GameDetailsActivity" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".ui.view.ProfileCreationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.LoginActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.view.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

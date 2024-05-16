@@ -1,6 +1,6 @@
-package com.victor.videogamesapi
+package com.victor.achieveplay.utils
 
-import RawgService
+import com.victor.achieveplay.data.service.RawgService
 import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.FirebaseFirestore

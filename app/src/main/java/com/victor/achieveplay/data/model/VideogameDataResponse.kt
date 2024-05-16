@@ -1,4 +1,4 @@
-package com.victor.achieveplay
+package com.victor.achieveplay.data.model
 
 import com.google.gson.annotations.SerializedName
 
