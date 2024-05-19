@@ -9,6 +9,8 @@
     <string name="fetch_games">Buscar videojuegos</string>
     <string name="change_activity">Cambiar de actividad</string>
     <string name="logout">Cerrar sesión</string>
+    <string name="profile_image_desc">Foto de perfil</string>
+    <string name="game_image">Imagen del juego</string>
     <string-array name="genre_options">
         <item>Todos</item>
         <item>RPG</item>

@@ -31,7 +31,7 @@ object FirestoreUtils {
                       Log.i("FetchAllGames", "Page: $currentPage, Games Fetched: ${games.size}")
                       currentPage++
                       games.forEach { game ->
-                          Log.i("Game", "Name: ${game.name}, Released: ${game.releasedDate}")
+                         // Log.i("Game", "Name: ${game.name}, Released: ${game.releasedDate}, Genres: ${game.genres}")
 
                           // Prepare data for Firestore
                           val gameData = hashMapOf(
@@ -41,11 +41,15 @@ object FirestoreUtils {
                               "platforms" to game.platforms.map { it.platformDetails.name },
                               "rating" to game.rating,
                               "image" to game.videogameImage,
-                              "genres" to game.genres
+                              "genres.name" to game.genres
                           )
+                          for( genre  in game.genres){
+                              Log.i("Game", "Name: ${game.name}, Genre: ${genre.name}")
+                          }
+
 
                           // Upload game data to Firestore
-                          firestore.collection("Videojuegos").document(game.videogameId)
+                         firestore.collection("Videojuegos").document(game.videogameId)
                               .set(gameData)
                               .addOnSuccessListener {
                                   Log.d(

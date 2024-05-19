@@ -1,6 +1,8 @@
 package com.victor.achieveplay.ui.view
 
 import android.os.Bundle
+import android.util.Log
+import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -10,6 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.victor.achieveplay.R
@@ -24,12 +27,13 @@ class GameDetailsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_game_details)
 
         val gameName = intent.getStringExtra("GAME_NAME")
-        val gameId = intent.getStringExtra("GAME_ID") // Asegúrate de pasar este ID desde la actividad anterior
+        val gameId = intent.getStringExtra("GAME_ID")
         val gameImageUrl = intent.getStringExtra("GAME_IMAGE_URL")
         val releaseDate = intent.getStringExtra("RELEASE_DATE")
-        val genre = intent.getStringExtra("GENRE")
+        val genres = intent.getStringArrayListExtra("GENRES")
         val rating = intent.getStringExtra("RATING")
         val description = intent.getStringExtra("DESCRIPTION")
+        val platforms = intent.getStringArrayListExtra("PLATFORMS")
 
         val textViewName = findViewById<TextView>(R.id.titleTextView)
         val imageViewGame = findViewById<ImageView>(R.id.gameImageView)
@@ -37,16 +41,21 @@ class GameDetailsActivity : AppCompatActivity() {
         val textViewGenre = findViewById<TextView>(R.id.genreTextView)
         val textViewRating = findViewById<TextView>(R.id.ratingTextView)
         val textViewDescription = findViewById<TextView>(R.id.descriptionTextView)
+        val textViewPlatform = findViewById<TextView>(R.id.platformTextView)
         val addToListButton = findViewById<Button>(R.id.addToListButton)
         val listsSpinner = findViewById<Spinner>(R.id.listsSpinner)
         val newListEditText = findViewById<EditText>(R.id.newListEditText)
 
         textViewName.text = gameName
-        Glide.with(this).load(gameImageUrl).into(imageViewGame)
+        Glide.with(this)
+            .load(gameImageUrl)
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .into(imageViewGame)
         textViewReleaseDate.text = releaseDate
-        textViewGenre.text = genre
         textViewRating.text = rating
+        textViewGenre.text = genres?.joinToString(", ")
         textViewDescription.text = description
+        textViewPlatform.text = platforms?.joinToString(", ")
 
         firestore = FirebaseFirestore.getInstance()
 
@@ -62,6 +71,8 @@ class GameDetailsActivity : AppCompatActivity() {
                 addToExistingList(selectedList, gameId, description)
             }
         }
+
+        applyAnimations()
     }
 
     private fun fetchUserLists(listsSpinner: Spinner) {
@@ -151,5 +162,19 @@ class GameDetailsActivity : AppCompatActivity() {
                     Toast.makeText(this, "Failed to add game to list", Toast.LENGTH_SHORT).show()
                 }
             }
+    }
+
+    private fun applyAnimations() {
+        val fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in)
+        findViewById<TextView>(R.id.titleTextView).startAnimation(fadeIn)
+        findViewById<ImageView>(R.id.gameImageView).startAnimation(fadeIn)
+        findViewById<TextView>(R.id.releaseDateTextView).startAnimation(fadeIn)
+        findViewById<TextView>(R.id.genreTextView).startAnimation(fadeIn)
+        findViewById<TextView>(R.id.ratingTextView).startAnimation(fadeIn)
+        findViewById<TextView>(R.id.descriptionTextView).startAnimation(fadeIn)
+        findViewById<TextView>(R.id.platformTextView).startAnimation(fadeIn)
+        findViewById<Spinner>(R.id.listsSpinner).startAnimation(fadeIn)
+        findViewById<EditText>(R.id.newListEditText).startAnimation(fadeIn)
+        findViewById<Button>(R.id.addToListButton).startAnimation(fadeIn)
     }
 }

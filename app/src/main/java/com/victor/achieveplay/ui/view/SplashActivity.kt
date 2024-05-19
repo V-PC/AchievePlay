@@ -27,7 +27,7 @@ class SplashActivity : AppCompatActivity() {
         val profileComplete = checkIfUserProfileComplete { isProfileComplete ->
             if (isProfileComplete) {
                 // Navegar a la pantalla principal
-                startActivity(Intent(this, HomeActivity::class.java))
+                startActivity(Intent(this, DiscoveryActivity::class.java))
                 finish()
             } else {
                 // Navegar a la pantalla de login o creación de perfil

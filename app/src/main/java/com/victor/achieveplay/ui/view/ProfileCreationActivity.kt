@@ -6,7 +6,10 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -20,10 +23,12 @@ class ProfileCreationActivity : AppCompatActivity() {
     }
 
     private lateinit var profileImageView: ImageView
-    private lateinit var imageUri: Uri
+    private var imageUri: Uri? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile_creation)
+
         profileImageView = findViewById(R.id.profileImageView)
         findViewById<Button>(R.id.uploadPhotoButton).setOnClickListener {
             val intent = Intent()
@@ -33,22 +38,26 @@ class ProfileCreationActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.submitButton).setOnClickListener {
-            uploadImageToStorage(imageUri)
+            if (imageUri != null) {
+                uploadImageToStorage(imageUri!!)
+            } else {
+                Toast.makeText(this, "Please select an image first.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.data != null) {
-            val Uri = data.data
-            if (Uri != null) {
-                imageUri = Uri
-            }
-            profileImageView.setImageURI(imageUri)
+            imageUri = data.data
+            Glide.with(this)
+                .load(imageUri)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(profileImageView)
         }
     }
 
-    fun uploadImageToStorage(imageUri: Uri) {
+    private fun uploadImageToStorage(imageUri: Uri) {
         val storageReference = FirebaseStorage.getInstance().getReference("profileImages/${UUID.randomUUID()}")
         val uploadTask = storageReference.putFile(imageUri)
         uploadTask.addOnSuccessListener {
@@ -57,27 +66,36 @@ class ProfileCreationActivity : AppCompatActivity() {
                 saveUserProfileToFirestore(photoUrl)
             }
         }.addOnFailureListener {
-            // Manejar errores de subida
+            Toast.makeText(this, "Error uploading image: ${it.message}", Toast.LENGTH_SHORT).show()
         }
     }
-    fun saveUserProfileToFirestore(photoUrl: String) {
-        val userName = findViewById<EditText>(R.id.usernameEditText).text.toString()
+
+    private fun saveUserProfileToFirestore(photoUrl: String) {
+        val userName = findViewById<EditText>(R.id.usernameEditText).text.toString().trim()
         val userId = FirebaseAuth.getInstance().currentUser?.uid
 
-        val userMap = hashMapOf(
-            "userName" to userName,
-            "photoUrl" to photoUrl
-        )
+        if (userName.isEmpty()) {
+            Toast.makeText(this, "Please enter a username.", Toast.LENGTH_SHORT).show()
+            return
+        }
 
-        FirebaseFirestore.getInstance().collection("users").document(userId!!).set(userMap)
-            .addOnSuccessListener {
-                val intent = Intent(this, DiscoveryActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
-            .addOnFailureListener {
-                // Mostrar mensaje de error
-            }
+        if (userId != null) {
+            val userMap = hashMapOf(
+                "userName" to userName,
+                "photoUrl" to photoUrl
+            )
+
+            FirebaseFirestore.getInstance().collection("users").document(userId).set(userMap)
+                .addOnSuccessListener {
+                    val intent = Intent(this, DiscoveryActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this, "Error saving profile: ${it.message}", Toast.LENGTH_SHORT).show()
+                }
+        } else {
+            Toast.makeText(this, "User ID is null.", Toast.LENGTH_SHORT).show()
+        }
     }
-
 }
