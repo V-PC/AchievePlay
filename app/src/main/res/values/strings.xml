@@ -11,6 +11,7 @@
     <string name="logout">Cerrar sesión</string>
     <string name="profile_image_desc">Foto de perfil</string>
     <string name="game_image">Imagen del juego</string>
+    <string name="userManual">Manual de usuario</string>
     <string-array name="genre_options">
         <item>Todos</item>
         <item>RPG</item>
@@ -32,5 +33,9 @@
         <item>2018</item>
         <item>2020</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="fetch_users">BUSCAR USUARIOS</string>
+    <string name="searchUsers_hint">Buscar usuarios...</string>
 
 </resources>

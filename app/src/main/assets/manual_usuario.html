@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual de Usuario - AchievePlay</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        header {
+            background-color: #1E88E5;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+        main {
+            padding: 20px;
+        }
+        h2, h3 {
+            color: #1E88E5;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin: 10px 0;
+        }
+        a {
+            text-decoration: none;
+            color: #1E88E5;
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            color: #1565C0;
+            text-decoration: underline;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        .highlight {
+            background-color: #BBDEFB;
+            padding: 10px;
+            border-left: 5px solid #1E88E5;
+            margin-bottom: 20px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+        .nav-link {
+            cursor: pointer;
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #1E88E5;
+            color: white;
+            border-radius: 5px;
+            margin: 5px 0;
+            transition: background-color 0.3s ease;
+        }
+        .nav-link:hover {
+            background-color: #1565C0;
+            color: white;
+            font-weight: bold;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>📚 Manual de Usuario de AchievePlay</h1>
+</header>
+<main>
+    <div class="section">
+        <ul>
+            <li><a class="nav-link" href="#introduccion">🎮 Introducción</a></li>
+            <li><a class="nav-link" href="#requisitos-del-sistema">🔧 Requisitos del Sistema</a></li>
+            <li><a class="nav-link" href="#inicio-de-sesion-y-registro">🔓 Inicio de Sesión</a></li>
+            <li><a class="nav-link" href="#creacion-de-perfil">👤 Creación de Perfil</a></li>
+            <li><a class="nav-link" href="#busqueda-y-filtrado-de-videojuegos">🔍 Búsqueda y Filtrado de Videojuegos</a></li>
+            <li><a class="nav-link" href="#visualizacion-de-detalles-del-videojuego">📋 Visualización de Detalles del Videojuego</a></li>
+            <li><a class="nav-link" href="#gestion-de-listas-de-videojuegos">📑 Gestión de Listas de Videojuegos</a></li>
+            <li><a class="nav-link" href="#edicion-de-perfil">✏️ Edición de Perfil</a></li>
+            <li><a class="nav-link" href="#configuracion-y-cierre-de-sesion">⚙️ Configuración y Cierre de Sesión</a></li>
+            <li><a class="nav-link" href="#solucion-de-problemas">❓ Solución de Problemas</a></li>
+            <li><a class="nav-link" href="#contacto-y-soporte">📞 Contacto y Soporte</a></li>
+        </ul>
+    </div>
+
+    <div class="section fade-in" id="introduccion">
+        <h2>🎮 Introducción</h2>
+        <p>AchievePlay es una aplicación que permite a los usuarios buscar, filtrar y gestionar sus videojuegos favoritos. Los usuarios pueden crear y personalizar sus perfiles, ver detalles de los videojuegos, y organizar los juegos en listas personalizadas.</p>
+    </div>
+
+    <div class="section fade-in" id="requisitos-del-sistema">
+        <h2>🔧 Requisitos del Sistema</h2>
+        <ul>
+            <li>Dispositivo Android con versión 5.0 (Lollipop) o superior.</li>
+            <li>Conexión a Internet para acceder a la base de datos en la nube.</li>
+            <li>Cuenta de Google para autenticarse como usuario.</li>
+        </ul>
+    </div>
+
+    <div class="section fade-in" id="inicio-de-sesion-y-registro">
+        <h2>🔓 Inicio de Sesión y Registro</h2>
+        <ul>
+            <li><b>Abrir la Aplicación</b>: Inicia AchievePlay en tu dispositivo.</li>
+                <li><b>Pulsar "Sing in with Google"</b>: Se mostrarán tus cuentas de Google.</li>
+            <li><b>Seleccionar cuenta de Google</b>: Seleccionar la cuenta de Google que quieras vincular.</li>
+        </ul>
+    </div>
+
+    <div class="section fade-in" id="creacion-de-perfil">
+        <h2>👤 Creación de Perfil</h2>
+        <p class="highlight">¡Personaliza tu experiencia de juego con un perfil único!</p>
+        <ul>
+            <li><b>Nombre de Usuario</b>: Ingresa tu nombre de usuario en el campo correspondiente.</li>
+            <li><b>Subir Foto de Perfil</b>:
+                <ul>
+                    <li>Pulsa la imagen de perfil vacía.</li>
+                    <li>Selecciona una foto desde tu dispositivo.</li>
+                </ul>
+            </li>
+            <li><b>Guardar Perfil</b>: Pulsa "Guardar Perfil".</li>
+        </ul>
+    </div>
+
+    <div class="section fade-in" id="busqueda-y-filtrado-de-videojuegos">
+        <h2>🔍 Búsqueda y Filtrado de Videojuegos</h2>
+        <h3>Búsqueda</h3>
+        <ul>
+            <li><b>Barra de Búsqueda</b>: En la pantalla principal, ingresa el nombre del videojuego que deseas buscar.</li>
+            <li><b>Resultados</b>: Los resultados aparecerán al tocar el botón de búsqueda.</li>
+        </ul>
+
+        <h3>Filtrado</h3>
+        <ul>
+            <li><b>Seleccionar Género</b>: Pulsa el desplegable de género y elige una opción.</li>
+            <li><b>Seleccionar Plataforma</b>: Pulsa el desplegable de plataforma y selecciona una opción.</li>
+            <li><b>Aplicar Filtros</b>: Los resultados se actualizarán automáticamente.</li>
+        </ul>
+    </div>
+
+    <div class="section fade-in" id="visualizacion-de-detalles-del-videojuego">
+        <h2>📋 Visualización de Detalles del Videojuego</h2>
+        <ul>
+            <li><b>Seleccionar Videojuego</b>: En la lista de resultados, pulsa el videojuego del cual deseas ver los detalles.</li>
+            <li><b>Detalles del Juego</b>: La pantalla de detalles muestra el nombre, imagen, fecha de lanzamiento, géneros, plataformas y rating del videojuego.</li>
+            <li><b>Volver a la Lista</b>: Pulsa el botón de retroceso para volver a la lista de resultados.</li>
+        </ul>
+    </div>
+
+    <div class="section fade-in" id="gestion-de-listas-de-videojuegos">
+        <h2>📑 Gestión de Listas de Videojuegos</h2>
+        <h3>Añadir a Lista Existente</h3>
+        <ul>
+            <li><b>Seleccionar Videojuego</b>: Pulsa "Añadir a Lista".</li>
+            <li><b>Seleccionar Lista</b>: Elige una lista existente.</li>
+            <li><b>Guardar en Lista</b>: Pulsa "Guardar en Lista".</li>
+        </ul>
+
+        <h3>Crear Nueva Lista</h3>
+        <ul>
+            <li><b>Seleccionar Videojuego</b>: Pulsa "Añadir a Lista".</li>
+            <li><b>Ingresar Nombre de Lista</b>: Escribe un nombre para la nueva lista.</li>
+            <li><b>Guardar en Lista</b>: Pulsa "Crear y Guardar en Lista".</li>
+        </ul>
+    </div>
+
+    <div class="section fade-in" id="edicion-de-perfil">
+        <h2>✏️ Edición de Perfil</h2>
+        <ul>
+            <li><b>Acceder a Perfil</b>: Desde la pantalla principal, pulsa el icono de perfil en la esquina superior derecha.</li>
+            <li><b>Editar Información</b>: Pulsa en el nombre de usuario o la imagen de perfil para editar.</li>
+            <li><b>Subir Nueva Foto</b>: Selecciona una nueva foto desde tu dispositivo.</li>
+            <li><b>Guardar Cambios</b>: Pulsa "Guardar Cambios".</li>
+        </ul>
+    </div>
+
+    <div class="section fade-in" id="configuracion-y-cierre-de-sesion">
+        <h2>⚙️Cierre de Sesión</h2>
+        <ul>
+            <li><b>Acceder a Perfil</b>: Desde la pantalla principal, pulsa el icono de perfil en la esquina superior derecha.</li>
+            <li><b>Cerrar Sesión</b>: Pulsa el botón de la esquina inferior derecha para salir de tu cuenta.</li>
+        </ul>
+    </div>
+
+    <div class="section fade-in" id="solucion-de-problemas">
+        <h2>❓ Solución de Problemas</h2>
+        <h3>Problemas de Inicio de Sesión</h3>
+        <ul>
+            <li><b>Verificar Conexión</b>: Asegúrate de que tu dispositivo esté conectado a Internet.</li>
+            <li><b>Revisar Credenciales</b>: Verifica que tu cuenta de Google sea correcta y esté habilitada.</li>
+        </ul>
+
+        <h3>Errores de Carga de Imágenes</h3>
+        <ul>
+            <li><b>Permisos</b>: Asegúrate de que la aplicación tenga permisos para acceder a tus fotos.</li>
+            <li><b>Formato de Imagen</b>: Verifica que la imagen sea compatible (preferiblemente en formato PNG o JPG).</li>
+        </ul>
+
+        <h3>Filtros No Funcionan</h3>
+        <ul>
+            <li><b>Datos Disponibles</b>: Asegúrate de que los filtros aplicados correspondan a los datos que estás buscando.</li>
+        </ul>
+    </div>
+
+    <div class="section fade-in" id="contacto-y-soporte">
+        <h2>📞 Contacto y Soporte</h2>
+        <p>Para soporte técnico o preguntas, contacta con nuestro equipo:</p>
+        <ul>
+            <li><b>Correo Electrónico</b>: soporte@achieveplay.com</li>
+            <li><b>Teléfono</b>: +34 123 456 789</li>
+            <li><b>Sitio Web</b>: <a href="http://www.achieveplay.com">www.achieveplay.com</a></li>
+        </ul>
+    </div>
+</main>
+</body>
+</html>

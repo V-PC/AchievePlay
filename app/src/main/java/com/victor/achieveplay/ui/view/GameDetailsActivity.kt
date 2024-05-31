@@ -2,7 +2,9 @@ package com.victor.achieveplay.ui.view
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -43,6 +45,7 @@ class GameDetailsActivity : AppCompatActivity() {
         val textViewDescription = findViewById<TextView>(R.id.descriptionTextView)
         val textViewPlatform = findViewById<TextView>(R.id.platformTextView)
         val addToListButton = findViewById<Button>(R.id.addToListButton)
+        val createListButton = findViewById<Button>(R.id.createListButton)
         val listsSpinner = findViewById<Spinner>(R.id.listsSpinner)
         val newListEditText = findViewById<EditText>(R.id.newListEditText)
 
@@ -63,12 +66,15 @@ class GameDetailsActivity : AppCompatActivity() {
 
         addToListButton.setOnClickListener {
             val selectedList = listsSpinner.selectedItem?.toString()
-            val newListName = newListEditText.text.toString().trim()
+            if (selectedList != null && gameId != null) {
+                addToExistingList(selectedList, gameId, description, gameImageUrl,gameName)
+            }
+        }
 
+        createListButton.setOnClickListener {
+            val newListName = newListEditText.text.toString().trim()
             if (newListName.isNotEmpty()) {
-                createNewListAndAddGame(newListName, gameId, description)
-            } else if (selectedList != null) {
-                addToExistingList(selectedList, gameId, description)
+                createNewList(newListName)
             }
         }
 
@@ -88,7 +94,8 @@ class GameDetailsActivity : AppCompatActivity() {
                     for (document in documents) {
                         lists.add(document.getString("listName")!!)
                     }
-                    val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, lists)
+                    val adapter = ArrayAdapter(this, R.layout.spinner_item, lists)
+                    adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
                     listsSpinner.adapter = adapter
                 }
                 .addOnFailureListener { exception ->
@@ -97,11 +104,11 @@ class GameDetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun createNewListAndAddGame(listName: String, gameId: String?, gameDescription: String?) {
+    private fun createNewList(listName: String) {
         val user = FirebaseAuth.getInstance().currentUser
         val userId = user?.uid
 
-        if (userId != null && gameId != null) {
+        if (userId != null) {
             val newListRef = firestore.collection("lists").document()
             val newListData = hashMapOf(
                 "userId" to userId,
@@ -111,15 +118,16 @@ class GameDetailsActivity : AppCompatActivity() {
 
             newListRef.set(newListData)
                 .addOnSuccessListener {
-                    addToGamesInList(newListRef.id, gameId, gameDescription)
+                    fetchUserLists(findViewById(R.id.listsSpinner))
+                    Toast.makeText(this, "Lista creada", Toast.LENGTH_SHORT).show()
                 }
                 .addOnFailureListener { exception ->
-                    Toast.makeText(this, "Failed to create list: ${exception.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Fallo al crear la lista: ${exception.message}", Toast.LENGTH_SHORT).show()
                 }
         }
     }
 
-    private fun addToExistingList(listName: String, gameId: String?, gameDescription: String?) {
+    private fun addToExistingList(listName: String, gameId: String?, gameDescription: String?, gameImageUrl: String?,gameName: String?) {
         val user = FirebaseAuth.getInstance().currentUser
         val userId = user?.uid
 
@@ -132,17 +140,38 @@ class GameDetailsActivity : AppCompatActivity() {
                     if (!documents.isEmpty) {
                         val listId = documents.documents[0].getString("listId")
                         if (listId != null) {
-                            addToGamesInList(listId, gameId, gameDescription)
+                            checkIfGameExistsInList(listId, gameId) { exists ->
+                                if (!exists) {
+                                    addToGamesInList(listId, gameId, gameDescription, gameImageUrl, gameName)
+                                } else {
+                                    Toast.makeText(this, "El juego ya está en la lista", Toast.LENGTH_SHORT).show()
+                                }
+                            }
                         }
                     }
                 }
                 .addOnFailureListener { exception ->
-                    Toast.makeText(this, "Failed to find list: ${exception.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Error al encontrar la lista: ${exception.message}", Toast.LENGTH_SHORT).show()
                 }
         }
     }
 
-    private fun addToGamesInList(listId: String, gameId: String, gameDescription: String?) {
+    private fun checkIfGameExistsInList(listId: String, gameId: String, callback: (Boolean) -> Unit) {
+        firestore.collection("gamesInList")
+            .whereEqualTo("listId", listId)
+            .whereEqualTo("gameId", gameId)
+            .get()
+            .addOnSuccessListener { documents ->
+                callback(documents.size() > 0)
+            }
+            .addOnFailureListener { exception ->
+                Toast.makeText(this, "Error al comprobar si el juego ya está en la lista: ${exception.message}", Toast.LENGTH_SHORT).show()
+                callback(false)
+            }
+    }
+
+
+    private fun addToGamesInList(listId: String, gameId: String, gameDescription: String?, gameImageUrl: String?,gameName: String?) {
         val user = FirebaseAuth.getInstance().currentUser
         val userId = user?.uid
         val gameInListRef = firestore.collection("gamesInList").document()
@@ -151,13 +180,15 @@ class GameDetailsActivity : AppCompatActivity() {
             "listId" to listId,
             "gameId" to gameId,
             "description" to gameDescription,
-            "timestamp" to Date().time
+            "timestamp" to Date().time,
+            "gameName" to gameName,
+            "gameImageUrl" to gameImageUrl
         )
 
         gameInListRef.set(gameData)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Toast.makeText(this, "Game added to list", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Juego añadido a la lista", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this, "Failed to add game to list", Toast.LENGTH_SHORT).show()
                 }
@@ -176,5 +207,6 @@ class GameDetailsActivity : AppCompatActivity() {
         findViewById<Spinner>(R.id.listsSpinner).startAnimation(fadeIn)
         findViewById<EditText>(R.id.newListEditText).startAnimation(fadeIn)
         findViewById<Button>(R.id.addToListButton).startAnimation(fadeIn)
+        findViewById<Button>(R.id.createListButton).startAnimation(fadeIn)
     }
 }

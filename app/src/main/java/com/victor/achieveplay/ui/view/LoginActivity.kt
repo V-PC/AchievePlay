@@ -127,7 +127,6 @@ class LoginActivity : AppCompatActivity() , SensorEventListener {
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Inicio de sesión exitoso, obtener información del usuario
                     val user = auth.currentUser
                     Log.i(TAG, "Inicio de sesión exitoso con Firebase: ${user?.displayName}")
 

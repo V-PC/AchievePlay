@@ -28,7 +28,7 @@ class ProfileCreationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile_creation)
-
+        checkUserProfile()
         profileImageView = findViewById(R.id.profileImageView)
         findViewById<Button>(R.id.uploadPhotoButton).setOnClickListener {
             val intent = Intent()
@@ -81,6 +81,7 @@ class ProfileCreationActivity : AppCompatActivity() {
 
         if (userId != null) {
             val userMap = hashMapOf(
+                "userId" to userId,
                 "userName" to userName,
                 "photoUrl" to photoUrl
             )
@@ -96,6 +97,39 @@ class ProfileCreationActivity : AppCompatActivity() {
                 }
         } else {
             Toast.makeText(this, "User ID is null.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun checkUserProfile() {
+        val profileComplete = checkIfUserProfileComplete { isProfileComplete ->
+            if (isProfileComplete) {
+                // Navegar a la pantalla principal
+                startActivity(Intent(this, DiscoveryActivity::class.java))
+                finish()
+            }
+        }
+
+    }
+
+    fun checkIfUserProfileComplete(completion: (Boolean) -> Unit) {
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            val db = FirebaseFirestore.getInstance()
+            db.collection("users").document(user.uid).get().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val document = task.result
+                    if (document != null && document.exists()) {
+                        val username = document.getString("userName")
+                        completion(!username.isNullOrEmpty())
+                    } else {
+                        completion(false)
+                    }
+                } else {
+                    completion(false)
+                }
+            }
+        } else {
+            completion(false)
         }
     }
 }

@@ -11,19 +11,15 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Comprueba si el usuario ya está logeado
         if (FirebaseAuth.getInstance().currentUser != null) {
-            // Usuario ya logeado, verifica si necesita completar su perfil
             checkUserProfile()
         } else {
-            // No logeado, envía al usuario a la pantalla de Login
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
     }
 
     private fun checkUserProfile() {
-        // Supongamos que tienes un método que verifica si el perfil del usuario está completo
         val profileComplete = checkIfUserProfileComplete { isProfileComplete ->
             if (isProfileComplete) {
                 // Navegar a la pantalla principal
@@ -47,16 +43,16 @@ class SplashActivity : AppCompatActivity() {
                     val document = task.result
                     if (document != null && document.exists()) {
                         val username = document.getString("userName")
-                        completion(!username.isNullOrEmpty()) // Llama al callback con true si el username existe y no está vacío
+                        completion(!username.isNullOrEmpty())
                     } else {
-                        completion(false) // Llama al callback con false si el documento no existe
+                        completion(false)
                     }
                 } else {
-                    completion(false) // Llama al callback con false si la consulta falló
+                    completion(false)
                 }
             }
         } else {
-            completion(false) // Llama al callback con false si el usuario no está logueado
+            completion(false)
         }
     }
 
