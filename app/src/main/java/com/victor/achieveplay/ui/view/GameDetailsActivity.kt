@@ -181,8 +181,8 @@ class GameDetailsActivity : AppCompatActivity() {
             "gameId" to gameId,
             "description" to gameDescription,
             "timestamp" to Date().time,
-            "gameName" to gameName,
-            "gameImageUrl" to gameImageUrl
+            "name" to gameName,
+            "image" to gameImageUrl
         )
 
         gameInListRef.set(gameData)

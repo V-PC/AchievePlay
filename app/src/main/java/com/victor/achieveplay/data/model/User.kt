@@ -1,7 +1,7 @@
 package com.victor.achieveplay.data.model
 
 data class User(
-    val id: String = "",
+    val userId: String = "",
     val userName: String = "",
     val photoUrl: String = ""
 )

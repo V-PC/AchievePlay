@@ -149,8 +149,8 @@ class UserProfileActivity : AppCompatActivity() {
                             val games = gameDocuments.map {
                                 Game(
                                     id = it.getString("gameId")!!,
-                                    name = it.getString("gameName")!!,
-                                    image = it.getString("gameImageUrl")!!
+                                    name = it.getString("name")!!,
+                                    image = it.getString("image")!!
                                 )
                             }
                             gamesInListAdapter = GamesInListAdapter(games) { game ->

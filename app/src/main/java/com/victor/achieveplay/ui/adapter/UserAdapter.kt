@@ -26,7 +26,7 @@ class UserAdapter(
                 if (position != RecyclerView.NO_POSITION) {
                     val user = users[position]
                     val intent = Intent(itemView.context, OtherUserProfile::class.java).apply {
-                        putExtra("USER_ID", user.id)
+                        putExtra("USER_ID", user.userId)
                     }
                     itemView.context.startActivity(intent)
                 }
